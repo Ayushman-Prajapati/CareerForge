@@ -3,17 +3,12 @@ import os
 
 load_dotenv()
 
-class Settings:
-    PROJECT_NAME = "CareerForge"
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-    SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-    ALGORITHM = "HS256"
+ALGORITHM = os.getenv("ALGORITHM")
 
-    ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
-    DATABASE_URL = os.getenv("DATABASE_URL")
-
-    REDIS_URL = os.getenv("REDIS_URL")
-
-settings = Settings()
+ACCESS_TOKEN_EXPIRE_MINUTES = int(
+    os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+)
