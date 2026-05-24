@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
+from app.models.otp import OTP
 from app.core.database import (
     Base,
     engine
@@ -31,6 +32,16 @@ app = FastAPI(
     title="CareerForge API",
     version="1.0.0"
 )
+
+# Add CORS Middleware to allow requests from the React frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for local development
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Authentication routes
 app.include_router(
