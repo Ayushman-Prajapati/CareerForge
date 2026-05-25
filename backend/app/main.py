@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.database import (
@@ -7,6 +6,13 @@ from app.core.database import (
     engine
 )
 
+# Models
+from app.models.user import User
+from app.models.otp import OTP
+from app.models.job import Job
+from app.models.application import Application
+
+# Routers
 from app.api.v1.auth.routes import (
     router as auth_router
 )
@@ -19,15 +25,20 @@ from app.api.v1.jobs.routes import (
     router as jobs_router
 )
 
+from app.api.v1.applications.routes import (
+    router as application_router
+)
 
-# Create database tables
+
+# Create Database Tables
 Base.metadata.create_all(bind=engine)
 
 
 # FastAPI App
 app = FastAPI(
     title="CareerForge API",
-    version="1.0.0"
+    version="1.0.0",
+    description="Modern Full Stack Job Portal API"
 )
 
 
@@ -67,7 +78,19 @@ app.include_router(
 app.include_router(
     jobs_router,
 
+    prefix="/jobs",
+
     tags=["Jobs"]
+)
+
+
+# Application Routes
+app.include_router(
+    application_router,
+
+    prefix="/applications",
+
+    tags=["Applications"]
 )
 
 
@@ -76,5 +99,5 @@ app.include_router(
 def root():
 
     return {
-        "message": "CareerForge API running"
+        "message": "CareerForge API running successfully 🚀"
     }
