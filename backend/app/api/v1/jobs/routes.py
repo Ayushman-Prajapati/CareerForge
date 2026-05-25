@@ -1,4 +1,7 @@
-from fastapi import APIRouter, Depends
+from fastapi import (
+    APIRouter,
+    Depends
+)
 
 from sqlalchemy.orm import Session
 
@@ -33,3 +36,41 @@ def get_jobs(
 ):
 
     return JobService.get_all_jobs(db)
+
+
+@router.get("/{job_id}")
+def get_job(
+    job_id: int,
+    db: Session = Depends(get_db)
+):
+
+    return JobService.get_job_by_id(
+        db,
+        job_id
+    )
+
+
+@router.put("/{job_id}")
+def update_job(
+    job_id: int,
+    job: JobCreate,
+    db: Session = Depends(get_db)
+):
+
+    return JobService.update_job(
+        db,
+        job_id,
+        job
+    )
+
+
+@router.delete("/{job_id}")
+def delete_job(
+    job_id: int,
+    db: Session = Depends(get_db)
+):
+
+    return JobService.delete_job(
+        db,
+        job_id
+    )

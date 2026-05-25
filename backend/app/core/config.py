@@ -26,7 +26,10 @@ class Settings(BaseSettings):
     MAIL_SSL_TLS: bool
 
     class Config:
+
         env_file = ".env"
+
+        case_sensitive = True
 
 
 settings = Settings()
