@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* =========================
+   BASE
+========================= */
+
+@layer base {
+
+  html {
+    scroll-behavior: smooth;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  body {
+
+    @apply
+      bg-white
+      dark:bg-cyber-950
+
+      text-slate-900
+      dark:text-slate-100
+
+      font-sans
+      antialiased
+      overflow-x-hidden
+      min-h-screen
+
+      selection:bg-cyber-indigo
+      selection:text-white;
+  }
+}
+
+
+/* =========================
+   UTILITIES
+========================= */
+
+@layer utilities {
+
+
+  /* GLASS CARD */
+  .glass-card {
+
+    background:
+      rgba(255, 255, 255, 0.65);
+
+    @apply
+      dark:bg-[rgba(15,23,42,0.45)]
+      backdrop-blur-glass
+      border
+      border-slate-200/60
+      dark:border-white/5
+      shadow-glass;
+  }
+
+
+  /* GLASS CARD HOVER */
+  .glass-card-hover {
+
+    transition:
+      all 0.4s cubic-bezier(
+        0.16,
+        1,
+        0.3,
+        1
+      );
+  }
+
+  .glass-card-hover:hover {
+
+    background:
+      rgba(255,255,255,0.78);
+
+    @apply
+      dark:bg-[rgba(15,23,42,0.6)]
+      dark:border-indigo-500/25;
+
+    box-shadow:
+      0 12px 40px 0 rgba(99,102,241,0.15),
+      inset 0 0 0 1px rgba(99,102,241,0.1);
+
+    transform:
+      translateY(-4px);
+  }
+
+
+  /* GLASS INPUT */
+  .glass-input {
+
+    background:
+      rgba(255,255,255,0.7);
+
+    @apply
+      dark:bg-[rgba(15,23,42,0.6)]
+      backdrop-blur-glass
+      border
+      border-slate-300/60
+      dark:border-white/10;
+  }
+
+  .glass-input:focus {
+
+    background:
+      rgba(255,255,255,0.9);
+
+    @apply
+      dark:bg-[rgba(15,23,42,0.85)];
+
+    border-color:
+      rgba(99,102,241,0.5);
+
+    box-shadow:
+      0 0 15px rgba(99,102,241,0.2);
+
+    outline:
+      none;
+  }
+
+
+  /* TEXT GRADIENTS */
+  .text-gradient-purple-cyan {
+
+    background:
+      linear-gradient(
+        135deg,
+        #a78bfa 0%,
+        #06b6d4 100%
+      );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-indigo-cyan {
+
+    background:
+      linear-gradient(
+        135deg,
+        #6366f1 0%,
+        #06b6d4 100%
+      );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+
+  /* CYBER GRADIENTS */
+  .bg-gradient-cyber {
+
+    background:
+      linear-gradient(
+        135deg,
+        #6366f1 0%,
+        #3b82f6 50%,
+        #06b6d4 100%
+      );
+  }
+
+  .bg-gradient-cyber-hover {
+
+    background:
+      linear-gradient(
+        135deg,
+        #8b5cf6 0%,
+        #6366f1 50%,
+        #3b82f6 100%
+      );
+  }
+
+
+  /* GLOW BORDERS */
+  .glow-border-purple {
+
+    border:
+      1px solid rgba(139,92,246,0.2);
+
+    box-shadow:
+      0 0 15px rgba(139,92,246,0.1);
+  }
+
+  .glow-border-purple:hover {
+
+    border:
+      1px solid rgba(139,92,246,0.5);
+
+    box-shadow:
+      0 0 25px rgba(139,92,246,0.3);
+  }
+
+  .glow-border-cyan {
+
+    border:
+      1px solid rgba(6,182,212,0.2);
+
+    box-shadow:
+      0 0 15px rgba(6,182,212,0.1);
+  }
+
+  .glow-border-cyan:hover {
+
+    border:
+      1px solid rgba(6,182,212,0.5);
+
+    box-shadow:
+      0 0 25px rgba(6,182,212,0.3);
+  }
+
+
+  /* SOFT CYBER GLOW */
+  .cyber-glow {
+
+    box-shadow:
+      0 0 20px rgba(99,102,241,0.18),
+      0 0 40px rgba(6,182,212,0.08);
+  }
+
+
+  /* PAGE TRANSITION */
+  .page-transition {
+
+    animation:
+      fadeIn 0.4s
+      cubic-bezier(
+        0.16,
+        1,
+        0.3,
+        1
+      )
+      forwards;
+  }
+}
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+
+  background:
+    #030712;
+}
+
+::-webkit-scrollbar-thumb {
+
+  background:
+    #1f2937;
+
+  border-radius:
+    4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+
+  background:
+    #374151;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadeIn {
+
+  from {
+
+    opacity:
+      0;
+
+    transform:
+      translateY(8px);
+  }
+
+  to {
+
+    opacity:
+      1;
+
+    transform:
+      translateY(0);
+  }
+}

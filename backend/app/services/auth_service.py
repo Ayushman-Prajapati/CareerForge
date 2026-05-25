@@ -1,3 +1,7 @@
+import random
+
+from app.models.otp import OTP
+
 from sqlalchemy.orm import Session
 
 from app.models.user import User
@@ -77,14 +81,20 @@ class AuthService:
                 "error": "Invalid password"
             }
 
-        token = create_access_token({
-            "user_id": user.id,
-            "email": user.email,
-            "role": user.role
-        })
+        otp_code = str(
+            random.randint(100000, 999999)
+        )
+
+        otp_entry = OTP(
+            email=user.email,
+            otp=otp_code
+        )
+
+        db.add(otp_entry)
+        db.commit()
 
         return {
-            "message": "Login successful",
-            "access_token": token,
-            "token_type": "bearer"
+            "message": "OTP sent",
+            "email": user.email,
+            "otp": otp_code
         }
