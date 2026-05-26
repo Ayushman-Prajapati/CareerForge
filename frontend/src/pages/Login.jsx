@@ -139,7 +139,7 @@ const Login = () => {
       );
 
       const response = await api.post(
-        '/auth/auth/login',
+        '/auth/login',
         formBody,
         {
           headers: {
@@ -149,10 +149,6 @@ const Login = () => {
         }
       );
 
-      localStorage.setItem(
-        'otp',
-        response.data.otp
-      );
 
       localStorage.setItem(
         'otp_email',

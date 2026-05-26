@@ -13,7 +13,6 @@ from app.services.job_service import JobService
 
 
 router = APIRouter(
-    prefix="/jobs",
     tags=["Jobs"]
 )
 

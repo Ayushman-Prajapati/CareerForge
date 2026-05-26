@@ -158,7 +158,7 @@ const Register = () => {
     try {
 
       await api.post(
-        '/auth/auth/register',
+        '/auth/register',
         {
           username:
             formData.username,

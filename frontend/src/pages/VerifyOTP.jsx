@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
+import api from "../services/api";
 
 const VerifyOTP = () => {
 
   const [otp, setOtp] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -15,30 +18,55 @@ const VerifyOTP = () => {
     "otp_email"
   );
 
-  const verifyOTP = () => {
+  const verifyOTP = async () => {
 
-    const savedOTP = localStorage.getItem(
-      "otp"
-    );
+    if (!otp) {
 
-    if (otp === savedOTP) {
+      toast.error("Please enter OTP");
 
-      toast.success(
-        "OTP verified successfully"
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+
+      const response = await api.post(
+        `/auth/verify-otp?email=${encodeURIComponent(email)}&otp=${otp}`
       );
+
+      if (response.data.error) {
+
+        toast.error(
+          response.data.error
+        );
+
+        return;
+      }
 
       localStorage.setItem(
         "token",
-        "careerforge-user-token"
+        response.data.access_token
+      );
+
+      toast.success(
+        "OTP verified successfully 🚀"
       );
 
       navigate("/jobs");
 
-    } else {
+    } catch (error) {
+
+      console.error(error);
 
       toast.error(
+        error.response?.data?.detail ||
         "Invalid OTP"
       );
+
+    } finally {
+
+      setLoading(false);
     }
   };
 
@@ -72,9 +100,14 @@ const VerifyOTP = () => {
 
         <button
           onClick={verifyOTP}
-          className="w-full bg-gradient-to-r from-indigo-500 to-cyan-500 text-white py-4 rounded-2xl font-semibold text-lg hover:opacity-90 transition"
+          disabled={loading}
+          className="w-full bg-gradient-to-r from-indigo-500 to-cyan-500 text-white py-4 rounded-2xl font-semibold text-lg hover:opacity-90 transition disabled:opacity-50"
         >
-          Verify OTP
+          {
+            loading
+              ? "Verifying..."
+              : "Verify OTP"
+          }
         </button>
 
       </div>

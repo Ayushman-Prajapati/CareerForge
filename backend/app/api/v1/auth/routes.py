@@ -38,7 +38,6 @@ import random
 
 
 router = APIRouter(
-    prefix="/auth",
     tags=["Authentication"]
 )
 
@@ -72,7 +71,8 @@ async def login(
     db: Session = Depends(get_db)
 ):
 
-    response = await AuthService.login_user(
+    # REMOVE await here
+    response = AuthService.login_user(
         db,
         form_data.username,
         form_data.password

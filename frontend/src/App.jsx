@@ -26,11 +26,12 @@ import JobDetails from './pages/JobDetails';
 import ResumeBuilder from './pages/ResumeBuilder';
 
 
-// Root Redirect
+/* ROOT REDIRECT */
 const RootRedirect = () => {
 
-  const token =
-    localStorage.getItem('token');
+  const token = localStorage.getItem(
+    'token'
+  );
 
   return token
 
@@ -56,34 +57,34 @@ const App = () => {
 
     <Router>
 
-      {/* Toast Provider */}
+      {/* TOASTER */}
       <Toaster
 
         position="top-right"
 
         toastOptions={{
 
-          duration: 4000,
+          duration: 3500,
 
           style: {
 
             background:
-              'rgba(15, 23, 42, 0.92)',
+              'rgba(15,23,42,0.92)',
 
             color: '#f8fafc',
-
-            borderRadius: '18px',
 
             border:
               '1px solid rgba(255,255,255,0.08)',
 
+            borderRadius: '18px',
+
             backdropFilter: 'blur(16px)',
+
+            padding: '14px 18px',
 
             fontSize: '14px',
 
             fontWeight: '500',
-
-            padding: '14px 18px',
 
             boxShadow:
               '0 12px 40px rgba(0,0,0,0.45)',
@@ -112,10 +113,11 @@ const App = () => {
       />
 
 
-      {/* APP WRAPPER */}
+      {/* APP CONTAINER */}
       <div className="
-        flex flex-col
         min-h-screen
+        flex
+        flex-col
 
         bg-white
         dark:bg-cyber-950
@@ -123,11 +125,11 @@ const App = () => {
         text-slate-900
         dark:text-white
 
-        relative
         overflow-hidden
+        relative
       ">
 
-        {/* GRID OVERLAY */}
+        {/* GRID BACKGROUND */}
         <div className="
           absolute inset-0
 
@@ -140,13 +142,16 @@ const App = () => {
           [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]
 
           pointer-events-none
+
           z-0
         "></div>
 
 
         {/* GLOW EFFECTS */}
         <div className="
-          absolute top-[-10%] left-[-10%]
+          absolute
+          top-[-10%]
+          left-[-10%]
 
           w-[40%]
           h-[40%]
@@ -158,11 +163,14 @@ const App = () => {
           blur-[120px]
 
           pointer-events-none
+
           z-0
         "></div>
 
         <div className="
-          absolute bottom-[-10%] right-[-10%]
+          absolute
+          bottom-[-10%]
+          right-[-10%]
 
           w-[40%]
           h-[40%]
@@ -174,26 +182,27 @@ const App = () => {
           blur-[120px]
 
           pointer-events-none
+
           z-0
         "></div>
 
 
         {/* NAVBAR */}
-        <div className="
-          relative z-20
-        ">
+        <div className="relative z-20">
 
           <Navbar />
 
         </div>
 
 
-        {/* MAIN CONTENT */}
+        {/* MAIN */}
         <main className="
           flex-1
-          flex flex-col
+          flex
+          flex-col
 
-          relative z-10
+          relative
+          z-10
         ">
 
           <Routes>
@@ -280,29 +289,29 @@ const App = () => {
 
         {/* FOOTER */}
         <footer className="
-          relative z-10
+          relative
+          z-10
 
           border-t
+
           border-slate-200
-          dark:border-slate-800/70
+          dark:border-slate-800/60
 
-          py-6 px-4
-
-          text-center
-
-          text-xs
-
-          text-slate-500
-          dark:text-slate-400
+          bg-white/50
+          dark:bg-transparent
 
           backdrop-blur-xl
+
+          py-6
+          px-4
         ">
 
           <div className="
             max-w-7xl
             mx-auto
 
-            flex flex-col
+            flex
+            flex-col
             md:flex-row
 
             items-center
@@ -311,7 +320,12 @@ const App = () => {
             gap-4
           ">
 
-            <p>
+            <p className="
+              text-sm
+
+              text-slate-600
+              dark:text-slate-400
+            ">
 
               © {new Date().getFullYear()}
 
@@ -323,15 +337,23 @@ const App = () => {
 
             </p>
 
+
             <div className="
-              flex items-center gap-5
+              flex
+              items-center
+              gap-5
+
+              text-sm
             ">
 
               <button className="
+                text-slate-500
+                dark:text-slate-400
+
                 hover:text-slate-900
                 dark:hover:text-white
 
-                transition-colors
+                transition
               ">
 
                 Privacy
@@ -339,10 +361,13 @@ const App = () => {
               </button>
 
               <button className="
+                text-slate-500
+                dark:text-slate-400
+
                 hover:text-slate-900
                 dark:hover:text-white
 
-                transition-colors
+                transition
               ">
 
                 Terms
@@ -350,10 +375,13 @@ const App = () => {
               </button>
 
               <button className="
+                text-slate-500
+                dark:text-slate-400
+
                 hover:text-slate-900
                 dark:hover:text-white
 
-                transition-colors
+                transition
               ">
 
                 Support

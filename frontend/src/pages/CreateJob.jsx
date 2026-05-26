@@ -19,7 +19,10 @@ import {
   Clock3,
   Layers3,
   CheckCircle2,
-  Sparkles
+  Sparkles,
+  User2,
+  Globe,
+  ShieldCheck
 } from 'lucide-react';
 
 import { motion } from 'framer-motion';
@@ -41,20 +44,32 @@ const CreateJob = () => {
     useState({
 
       title: '',
+
       company: '',
+
       location: '',
+
       salary: '',
+
       description: '',
 
-      experience: '',
-      jobType: '',
-      skills: '',
+      experience_level: '',
+
+      job_type: '',
+
+      skills_required: '',
+
       eligibility: '',
+
+      recruiter_name: '',
+
+      company_website: '',
 
       remote: false
     });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] =
+    useState({});
 
   const [loading, setLoading] =
     useState(false);
@@ -63,6 +78,7 @@ const CreateJob = () => {
     useState('');
 
 
+  // HANDLE INPUTS
   const handleChange = (e) => {
 
     const {
@@ -96,6 +112,7 @@ const CreateJob = () => {
   };
 
 
+  // VALIDATION
   const validateForm = () => {
 
     const newErrors = {};
@@ -118,25 +135,10 @@ const CreateJob = () => {
         'Location is required';
     }
 
-    if (!formData.salary.trim()) {
-
-      newErrors.salary =
-        'Salary range is required';
-    }
-
-    if (
-      !formData.description.trim()
-    ) {
+    if (!formData.description.trim()) {
 
       newErrors.description =
         'Description is required';
-
-    } else if (
-      formData.description.length < 20
-    ) {
-
-      newErrors.description =
-        'Description should be at least 20 characters';
     }
 
     setErrors(newErrors);
@@ -147,6 +149,7 @@ const CreateJob = () => {
   };
 
 
+  // SUBMIT
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -162,35 +165,44 @@ const CreateJob = () => {
       await api.post(
         '/jobs/create',
         {
-          title: formData.title,
-          company: formData.company,
-          location: formData.location,
-          salary: formData.salary,
+
+          title:
+            formData.title,
+
+          company:
+            formData.company,
+
+          location:
+            formData.location,
+
+          salary:
+            formData.salary,
+
           description:
             formData.description,
 
-          experience:
-            formData.experience,
+          experience_level:
+            formData.experience_level,
 
           job_type:
-            formData.jobType,
+            formData.job_type,
 
-          skills:
-            formData.skills,
+          skills_required:
+            formData.skills_required,
 
           eligibility:
             formData.eligibility,
 
-          remote:
-            formData.remote
+          recruiter_name:
+            formData.recruiter_name,
+
+          company_website:
+            formData.company_website
         }
       );
 
       toast.success(
-        'Job opportunity posted!',
-        {
-          icon: '🚀'
-        }
+        'Job published successfully 🚀'
       );
 
       navigate('/jobs');
@@ -200,37 +212,16 @@ const CreateJob = () => {
       console.error(error);
 
       let errMsg =
-        'Failed to create job.';
+        'Failed to create job';
 
       if (error.response) {
 
-        const data =
-          error.response.data;
-
-        if (data.detail) {
-
-          errMsg =
-            typeof data.detail ===
-            'string'
-              ? data.detail
-              : JSON.stringify(
-                  data.detail
-                );
-
-        } else if (
-          data.message
-        ) {
-
-          errMsg =
-            data.message;
-        }
-
-      } else if (
-        error.request
-      ) {
-
         errMsg =
-          'Backend server not reachable.';
+          error.response.data?.detail ||
+
+          error.response.data?.message ||
+
+          errMsg;
       }
 
       setServerError(errMsg);
@@ -248,7 +239,7 @@ const CreateJob = () => {
 
     <div className="
       flex-1
-      max-w-5xl
+      max-w-6xl
       mx-auto
       w-full
 
@@ -260,11 +251,12 @@ const CreateJob = () => {
       dark:bg-cyber-950
     ">
 
-      {/* Background Glow */}
+      {/* Glow */}
       <div className="
         absolute top-1/4 left-1/4
 
-        w-96 h-96
+        w-[500px]
+        h-[500px]
 
         rounded-full
 
@@ -282,7 +274,7 @@ const CreateJob = () => {
         flex flex-col gap-6
       ">
 
-        {/* Breadcrumb */}
+        {/* BACK */}
         <div>
 
           <Link
@@ -294,6 +286,7 @@ const CreateJob = () => {
               text-xs
               font-semibold
               uppercase
+
               tracking-wider
 
               text-slate-500
@@ -306,9 +299,7 @@ const CreateJob = () => {
             "
           >
 
-            <ArrowLeft
-              size={14}
-            />
+            <ArrowLeft size={14} />
 
             Back to jobs
 
@@ -317,7 +308,7 @@ const CreateJob = () => {
         </div>
 
 
-        {/* Header */}
+        {/* HEADER */}
         <div>
 
           <h1 className="
@@ -336,7 +327,9 @@ const CreateJob = () => {
             <span className="
               text-gradient-indigo-cyan
             ">
+
               {' '}Opportunity
+
             </span>
 
           </h1>
@@ -348,27 +341,30 @@ const CreateJob = () => {
             dark:text-slate-400
           ">
 
-            Publish premium opportunities
-            for developers worldwide.
+            Publish professional job
+            opportunities for developers.
 
           </p>
 
         </div>
 
 
-        {/* Error */}
+        {/* ERROR */}
         {
           serverError && (
 
             <motion.div
+
               initial={{
                 opacity: 0,
                 height: 0
               }}
+
               animate={{
                 opacity: 1,
                 height: 'auto'
               }}
+
               className="
                 p-4
                 rounded-2xl
@@ -379,6 +375,7 @@ const CreateJob = () => {
                 border-cyber-rose/30
 
                 text-cyber-rose
+
                 text-sm
 
                 flex items-start gap-2.5
@@ -392,14 +389,18 @@ const CreateJob = () => {
                 "
               />
 
-              <span>{serverError}</span>
+              <span>
+
+                {serverError}
+
+              </span>
 
             </motion.div>
           )
         }
 
 
-        {/* Main Form */}
+        {/* FORM */}
         <div className="
           glass-card
 
@@ -416,10 +417,10 @@ const CreateJob = () => {
 
           <form
             onSubmit={handleSubmit}
-            className="space-y-7"
+            className="space-y-8"
           >
 
-            {/* BASIC INFO */}
+            {/* BASIC */}
             <div>
 
               <div className="
@@ -428,10 +429,10 @@ const CreateJob = () => {
               ">
 
                 <Sparkles
+                  size={18}
                   className="
                     text-cyber-indigo
                   "
-                  size={18}
                 />
 
                 <h2 className="
@@ -450,8 +451,10 @@ const CreateJob = () => {
 
 
               <div className="
-                grid grid-cols-1
+                grid
+                grid-cols-1
                 md:grid-cols-2
+
                 gap-5
               ">
 
@@ -460,12 +463,11 @@ const CreateJob = () => {
                   name="title"
                   type="text"
                   label="Job Title"
-                  placeholder="Senior Frontend Engineer"
+                  placeholder="Senior Backend Engineer"
                   icon={Briefcase}
                   value={formData.title}
                   onChange={handleChange}
                   error={errors.title}
-                  required
                 />
 
                 <Input
@@ -473,12 +475,11 @@ const CreateJob = () => {
                   name="company"
                   type="text"
                   label="Company"
-                  placeholder="CareerForge Inc."
+                  placeholder="Google"
                   icon={Building2}
                   value={formData.company}
                   onChange={handleChange}
                   error={errors.company}
-                  required
                 />
 
                 <Input
@@ -486,25 +487,22 @@ const CreateJob = () => {
                   name="location"
                   type="text"
                   label="Location"
-                  placeholder="Remote / India"
+                  placeholder="Bangalore / Remote"
                   icon={MapPin}
                   value={formData.location}
                   onChange={handleChange}
                   error={errors.location}
-                  required
                 />
 
                 <Input
                   id="salary"
                   name="salary"
                   type="text"
-                  label="Salary Range"
-                  placeholder="$80k - $120k"
+                  label="Salary"
+                  placeholder="₹12 LPA - ₹18 LPA"
                   icon={DollarSign}
                   value={formData.salary}
                   onChange={handleChange}
-                  error={errors.salary}
-                  required
                 />
 
               </div>
@@ -512,7 +510,7 @@ const CreateJob = () => {
             </div>
 
 
-            {/* JOB META */}
+            {/* JOB DETAILS */}
             <div>
 
               <div className="
@@ -521,10 +519,10 @@ const CreateJob = () => {
               ">
 
                 <Layers3
+                  size={18}
                   className="
                     text-cyber-cyan
                   "
-                  size={18}
                 />
 
                 <h2 className="
@@ -543,16 +541,20 @@ const CreateJob = () => {
 
 
               <div className="
-                grid grid-cols-1
+                grid
+                grid-cols-1
                 md:grid-cols-2
+
                 gap-5
               ">
 
+                {/* EXPERIENCE */}
                 <div>
 
                   <label className="
                     text-xs
                     uppercase
+
                     tracking-wider
                     font-semibold
 
@@ -565,12 +567,15 @@ const CreateJob = () => {
                   </label>
 
                   <select
-                    name="experience"
-                    value={formData.experience}
+                    name="experience_level"
+                    value={
+                      formData.experience_level
+                    }
                     onChange={handleChange}
                     className="
                       mt-2
                       w-full
+
                       py-3 px-4
 
                       rounded-2xl
@@ -611,11 +616,13 @@ const CreateJob = () => {
                 </div>
 
 
+                {/* TYPE */}
                 <div>
 
                   <label className="
                     text-xs
                     uppercase
+
                     tracking-wider
                     font-semibold
 
@@ -628,12 +635,15 @@ const CreateJob = () => {
                   </label>
 
                   <select
-                    name="jobType"
-                    value={formData.jobType}
+                    name="job_type"
+                    value={
+                      formData.job_type
+                    }
                     onChange={handleChange}
                     className="
                       mt-2
                       w-full
+
                       py-3 px-4
 
                       rounded-2xl
@@ -662,11 +672,11 @@ const CreateJob = () => {
                     </option>
 
                     <option>
-                      Contract
+                      Part Time
                     </option>
 
                     <option>
-                      Part Time
+                      Contract
                     </option>
 
                   </select>
@@ -679,33 +689,59 @@ const CreateJob = () => {
 
 
             {/* SKILLS */}
-            <div>
-
-              <Input
-                id="skills"
-                name="skills"
-                type="text"
-                label="Skills Required"
-                placeholder="React, FastAPI, PostgreSQL..."
-                icon={CheckCircle2}
-                value={formData.skills}
-                onChange={handleChange}
-              />
-
-            </div>
+            <Input
+              id="skills_required"
+              name="skills_required"
+              type="text"
+              label="Skills Required"
+              placeholder="React, FastAPI, PostgreSQL..."
+              icon={CheckCircle2}
+              value={formData.skills_required}
+              onChange={handleChange}
+            />
 
 
             {/* ELIGIBILITY */}
-            <div>
+            <Input
+              id="eligibility"
+              name="eligibility"
+              type="text"
+              label="Eligibility Criteria"
+              placeholder="B.Tech CSE, 7+ CGPA..."
+              icon={ShieldCheck}
+              value={formData.eligibility}
+              onChange={handleChange}
+            />
+
+
+            {/* RECRUITER */}
+            <div className="
+              grid
+              grid-cols-1
+              md:grid-cols-2
+
+              gap-5
+            ">
 
               <Input
-                id="eligibility"
-                name="eligibility"
+                id="recruiter_name"
+                name="recruiter_name"
                 type="text"
-                label="Eligibility Criteria"
-                placeholder="B.Tech CSE, 7+ CGPA..."
-                icon={Clock3}
-                value={formData.eligibility}
+                label="Recruiter Name"
+                placeholder="Ayushman Prajapati"
+                icon={User2}
+                value={formData.recruiter_name}
+                onChange={handleChange}
+              />
+
+              <Input
+                id="company_website"
+                name="company_website"
+                type="text"
+                label="Company Website"
+                placeholder="https://company.com"
+                icon={Globe}
+                value={formData.company_website}
                 onChange={handleChange}
               />
 
@@ -718,6 +754,7 @@ const CreateJob = () => {
               <label className="
                 text-xs
                 uppercase
+
                 tracking-wider
                 font-semibold
 
@@ -745,9 +782,9 @@ const CreateJob = () => {
                 <textarea
                   name="description"
                   rows="7"
-                  placeholder="Describe responsibilities, expectations, tech stack, team structure..."
                   value={formData.description}
                   onChange={handleChange}
+                  placeholder="Describe responsibilities, expectations, technologies, workflow..."
                   className="
                     w-full
 
@@ -794,36 +831,6 @@ const CreateJob = () => {
             </div>
 
 
-            {/* REMOTE */}
-            <div className="
-              flex items-center gap-3
-            ">
-
-              <input
-                type="checkbox"
-                name="remote"
-                checked={formData.remote}
-                onChange={handleChange}
-                className="
-                  w-5 h-5
-                  accent-cyber-indigo
-                "
-              />
-
-              <span className="
-                text-sm
-
-                text-slate-700
-                dark:text-slate-300
-              ">
-
-                This is a remote opportunity
-
-              </span>
-
-            </div>
-
-
             {/* FOOTER */}
             <div className="
               pt-5
@@ -859,6 +866,7 @@ const CreateJob = () => {
                 </Button>
 
               </Link>
+
 
               <Button
                 type="submit"
